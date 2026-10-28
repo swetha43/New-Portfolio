@@ -176,6 +176,23 @@ a{color:inherit}
 @media (max-width:480px){.live{padding:1rem}.lk .v{font-size:1.3rem}.cv{height:240px}}
 
 /* custom previews */
+.mk-tiles{position:absolute;inset:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mk-tile{background:#172033;border:1px solid #263045;border-top:3px solid var(--c);border-radius:8px;padding:8px;display:flex;flex-direction:column;justify-content:center}
+.mk-tile span{font-size:1rem}
+.mk-tile b{font-size:.74rem;margin-top:2px}
+.mk-tile small{font-size:.7rem;font-weight:700;color:var(--c)}
+.mk-pages{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%,rgba(139,92,246,.2),transparent 70%)}
+.mk-pg{position:absolute;width:120px;height:160px;border-radius:6px;background:#1c2539;border:1px solid #2f3b55}
+.mk-pg.back2{transform:translate(28px,-6px) rotate(8deg);opacity:.5}
+.mk-pg.back1{transform:translate(14px,-3px) rotate(4deg);opacity:.75}
+.mk-pg.front{background:#222c42;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 10px 25px rgba(0,0,0,.4)}
+.mk-pg-h i,.mk-pg-lines i{display:block;height:5px;border-radius:3px;background:#3a4763;margin-bottom:4px}
+.mk-pg-h i:first-child{background:#8b5cf6;width:70%}
+.mk-pg-bars{flex:1;display:flex;align-items:flex-end;gap:4px}
+.mk-pg-bars i{flex:1;border-radius:2px 2px 0 0;background:linear-gradient(#3b82f6,#8b5cf6)}
+.mk-pg-f{font-size:.55rem;color:var(--muted);text-align:right}
+.mk-badges{position:absolute;bottom:12px;right:12px;display:flex;gap:5px}
+.mk-badges span{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:50px;background:#0b0f17;border:1px solid #2f3b55;color:var(--text2)}
 .mk-nav{position:absolute;inset:0;display:grid;grid-template-columns:42% 1fr;font-size:.62rem}
 .mk-side{background:#f3f2f1;color:#222;padding:8px 10px;overflow:hidden}
 .mk-brand{font-weight:700;font-size:.66rem;margin-bottom:5px;color:#0b2a6f}
@@ -633,12 +650,16 @@ const palettes = [["#8b5cf6","#3b82f6"],["#34d399","#3b82f6"],["#f2c94c","#f2994
 function mockPreview(d, i){
   const [c1,c2] = palettes[i % palettes.length];
   if (d.mock === "nav") {
-    return `<div class="mk-nav"><div class="mk-side"><div class="mk-brand">Executive Leadership</div>${d.navItems.map((n,k)=>`<div class="mk-item${n==='Collections'?' on':''}">${k===0?'✨ ':''}${n}</div>`).join('')}</div>
-      <div class="mk-main"><div class="mk-bar"></div><div class="mk-row">${['94.6%','$1.6K','97.2%'].map((v,k)=>`<div><b style="color:${k?c2:c1}">${v}</b></div>`).join('')}</div>
-      <svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline points="0,32 14,28 28,30 42,22 56,20 70,14 84,12 100,6" fill="none" stroke="${c1}" stroke-width="2"/><polyline points="0,32 14,28 28,30 42,22 56,20 70,14 84,12 100,6 100,40 0,40" fill="${c1}" opacity=".15"/></svg></div></div>`;
+    const tiles=[["📈","Leasing","+4.2%"],["💰","Collections","97.8%"],["🔁","Renewals","61%"],["🛠️","Operations","On track"],["📊","Finance","$4.4M"],["✨","Copilot","Ask"]];
+    return `<div class="mk-tiles">${tiles.map((t,k)=>`<div class="mk-tile" style="--c:${[c1,c2,"#34d399","#f2c94c","#22d3ee","#f472b6"][k]}"><span>${t[0]}</span><b>${t[1]}</b><small>${t[2]}</small></div>`).join('')}</div>`;
   }
   if (d.mock === "ssrs") {
-    return `<div class="mk-ssrs"><div class="mk-title">Executive Status Report</div><div class="mk-cols">${d.sections.map(s=>`<div class="mk-tbl"><div class="mk-th"><span>${s}</span><span>Status</span><span>Cadence</span></div><div class="mk-td"><span></span><span class="ok">●</span><span>Weekly</span></div></div>`).join('')}</div></div>`;
+    return `<div class="mk-pages"><div class="mk-pg back2"></div><div class="mk-pg back1"></div><div class="mk-pg front">
+      <div class="mk-pg-h"><i></i><i style="width:35%"></i></div>
+      <div class="mk-pg-bars">${[55,80,40,70,90,60,75].map(h=>`<i style="height:${h}%"></i>`).join('')}</div>
+      <div class="mk-pg-lines"><i></i><i></i><i style="width:70%"></i></div>
+      <div class="mk-pg-f">Page 1 of 4</div></div>
+      <div class="mk-badges"><span>PDF</span><span>Excel</span><span>Print</span></div></div>`;
   }
   if (d.mock === "flow") {
     return `<div class="mk-flow">${d.steps.map((s,k)=>`${k?'<div class="mk-arrow">↓</div>':''}<div class="mk-step"><span class="mk-ic">${s[0]}</span><div><b>${s[1]}</b><small>${s[2]}</small></div></div>`).join('')}</div>`;
